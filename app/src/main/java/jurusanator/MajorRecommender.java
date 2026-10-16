@@ -19,7 +19,12 @@ import jurusanator.MajorData.Question;
  * stats screen, per-major match lookup, and an optional "duel" tie-break bonus.
  */
 public final class MajorRecommender {
-    public static final int DEFAULT_QUESTIONS = 12;
+    static final long EXPANDED_QUESTION_BANK_SEED_FLAG = 1L << 62;
+    // Unflagged saved seeds use the original question set for deterministic replay.
+    private static final int LEGACY_QUESTION_COUNT = 48;
+    public static final int DEFAULT_QUESTIONS = 24;
+    public static final int EARLY_STOP_MIN_ANSWERS = 12;
+    private static final int EARLY_STOP_STABLE_ANSWERS = 4;
     private static final int TOP_RESULTS = 4;
     private static final double DUEL_BONUS = 0.06;
     private static final double RELATED_BONUS = 0.45;
@@ -38,6 +43,8 @@ public final class MajorRecommender {
     private final Map<Question, Integer> answers = new LinkedHashMap<>();
     private final Set<Question> asked = new HashSet<>();
     private final Map<Integer, Double> bonus = new HashMap<>();
+    private final List<Integer> leaders = new ArrayList<>();
+    private boolean earlyStoppingEnabled = true;
     public MajorRecommender() {
         this(DEFAULT_QUESTIONS);
     }
@@ -45,8 +52,12 @@ public final class MajorRecommender {
         this(limit, 0L);
     }
     public MajorRecommender(int limit, long seed) {
+        this(limit, seed, true);
+    }
+    MajorRecommender(int limit, long seed, boolean earlyStoppingEnabled) {
         this.limit = Math.max(1, limit);
         this.seed = seed;
+        this.earlyStoppingEnabled = earlyStoppingEnabled;
     }
     public long seed() {
         return seed;
@@ -58,7 +69,46 @@ public final class MajorRecommender {
         return answers.size();
     }
     public boolean isComplete() {
-        return answeredCount() >= questionLimit();
+        return answeredCount() >= questionLimit()
+                || (earlyStoppingEnabled && answeredCount() >= EARLY_STOP_MIN_ANSWERS
+                        && hasStableLeader());
+    }
+    public boolean stoppedEarly() {
+        return isComplete() && answeredCount() < questionLimit();
+    }
+    void enableEarlyStopping() {
+        earlyStoppingEnabled = true;
+    }
+    private boolean hasStableLeader() {
+        if (leaders.size() < EARLY_STOP_STABLE_ANSWERS) {
+            return false;
+        }
+        int leader = leaders.get(leaders.size() - 1);
+        if (leader < 0) {
+            return false;
+        }
+        for (int i = leaders.size() - EARLY_STOP_STABLE_ANSWERS; i < leaders.size(); i++) {
+            if (leaders.get(i) != leader) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private int uniqueLeader() {
+        long best = Long.MIN_VALUE;
+        int leader = -1;
+        boolean tied = false;
+        for (int i = 0; i < MAJORS.size(); i++) {
+            long score = percentFor(i);
+            if (score > best) {
+                best = score;
+                leader = i;
+                tied = false;
+            } else if (score == best) {
+                tied = true;
+            }
+        }
+        return tied ? -1 : leader;
     }
     public Question nextQuestion() {
         if (isComplete()) {
@@ -97,7 +147,10 @@ public final class MajorRecommender {
         }
         List<Question> pool = new ArrayList<>();
         final Map<Question, Double> score = new HashMap<>();
-        for (Question question : QUESTIONS) {
+        int questionCount = (seed & EXPANDED_QUESTION_BANK_SEED_FLAG) == 0L
+                ? Math.min(LEGACY_QUESTION_COUNT, QUESTIONS.size()) : QUESTIONS.size();
+        for (int i = 0; i < questionCount; i++) {
+            Question question = QUESTIONS.get(i);
             if (asked.contains(question)) {
                 continue;
             }
@@ -142,6 +195,7 @@ public final class MajorRecommender {
         }
         asked.add(question);
         answers.put(question, answerIndex);
+        leaders.add(uniqueLeader());
     }
     public void undoLastAnswer() {
         if (answers.isEmpty()) {
@@ -153,6 +207,7 @@ public final class MajorRecommender {
         }
         answers.remove(lastQuestion);
         asked.remove(lastQuestion);
+        leaders.remove(leaders.size() - 1);
     }
     public int[] answerHistory() {
         int[] history = new int[answers.size()];
@@ -366,5 +421,3 @@ public final class MajorRecommender {
         }
     }
 }
-
-

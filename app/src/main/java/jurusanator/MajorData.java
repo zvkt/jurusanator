@@ -323,7 +323,55 @@ public final class MajorData {
 
             new Question("Saya senang mengeksplorasi ide baru meskipun jawabannya belum pasti.",
             "I enjoy exploring new ideas even when the answer isn't certain.",
-            new double[]{0, 1, 1, 0, 0, 0})
+            new double[]{0, 1, 1, 0, 0, 0}),
+
+            new Question("Saya menikmati bekerja langsung dengan alat atau bahan untuk membuat sesuatu.",
+            "I enjoy working hands-on with tools or materials to make something.",
+            new double[]{1, 0, 0, 0, 0, 0}),
+
+            new Question("Saya lebih suka belajar melalui praktik langsung daripada hanya membaca teori.",
+            "I prefer learning through hands-on practice rather than only reading theory.",
+            new double[]{1, 0, 0, 0, 0, 0}),
+
+            new Question("Saya suka mencari tahu mengapa sesuatu terjadi dengan mengumpulkan bukti.",
+            "I like figuring out why something happens by gathering evidence.",
+            new double[]{0, 1, 0, 0, 0, 0}),
+
+            new Question("Saya menikmati mengurai persoalan rumit menjadi pertanyaan kecil yang bisa diuji.",
+            "I enjoy breaking complex problems into smaller questions that can be tested.",
+            new double[]{0, 1, 0, 0, 0, 0}),
+
+            new Question("Saya senang menemukan cara yang orisinal untuk menyampaikan gagasan.",
+            "I enjoy finding original ways to express an idea.",
+            new double[]{0, 0, 1, 0, 0, 0}),
+
+            new Question("Saya tertarik pada tugas terbuka yang memberi ruang untuk bereksperimen dan berekspresi.",
+            "I'm drawn to open-ended tasks that leave room for experimentation and expression.",
+            new double[]{0, 0, 1, 0, 0, 0}),
+
+            new Question("Saya senang mendengarkan orang lain dan memahami sudut pandang mereka.",
+            "I enjoy listening to people and understanding their points of view.",
+            new double[]{0, 0, 0, 1, 0, 0}),
+
+            new Question("Saya menikmati bekerja sama untuk membantu komunitas atau kelompok.",
+            "I enjoy working with others to help a community or group.",
+            new double[]{0, 0, 0, 1, 0, 0}),
+
+            new Question("Saya bersemangat mengajak orang lain mendukung gagasan atau tujuan.",
+            "I enjoy persuading others to support an idea or goal.",
+            new double[]{0, 0, 0, 0, 1, 0}),
+
+            new Question("Saya suka mengambil inisiatif dan membuat keputusan agar sebuah proyek terus maju.",
+            "I like taking initiative and making decisions to move a project forward.",
+            new double[]{0, 0, 0, 0, 1, 0}),
+
+            new Question("Saya teliti memasukkan dan memeriksa informasi agar catatan tetap akurat.",
+            "I'm careful when entering and checking information so records stay accurate.",
+            new double[]{0, 0, 0, 0, 0, 1}),
+
+            new Question("Saya senang membuat langkah kerja yang rapi agar tugas berulang berjalan konsisten.",
+            "I enjoy creating orderly processes so recurring tasks are done consistently.",
+            new double[]{0, 0, 0, 0, 0, 1})
             );
 
 
@@ -668,5 +716,4 @@ public final class MajorData {
             Art.BELL, new double[]{0, 1, 1, 4, 3, 3})
             );
 }
-
 

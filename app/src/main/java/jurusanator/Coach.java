@@ -218,7 +218,7 @@ final class Coach {
     static int questionsFor(int strategy) {
         switch (strategy) {
             case Profile.STRAT_ENGAGE: return 8;
-            case Profile.STRAT_DEEP: return 16;
+            case Profile.STRAT_DEEP: return MajorRecommender.DEFAULT_QUESTIONS;
             default: return MajorRecommender.DEFAULT_QUESTIONS;
         }
     }
@@ -399,5 +399,4 @@ final class Coach {
                 "Bobot " + FACTOR_ID[top] + ": " + from + "% menjadi " + to + "%.");
     }
 }
-
 

@@ -213,7 +213,7 @@ public final class MainActivity extends Activity {
         rec = new MajorRecommender(Coach.questionsFor(quizStrategy), newSeed());
         answerMs.clear();
         if (p == null) return;
-        MajorRecommender r = new MajorRecommender(p.limit, p.seed);
+        MajorRecommender r = new MajorRecommender(p.limit, p.seed, false);
         try {
             for (int answer : p.answers) {
                 if (r.isComplete()) break;
@@ -222,6 +222,7 @@ public final class MainActivity extends Activity {
         } catch (RuntimeException e) {
             return;
         }
+        r.enableEarlyStopping();
         rec = r;
         quizStrategy = p.strategy;
         for (int i = 0; i < r.answeredCount(); i++) {
@@ -238,15 +239,16 @@ public final class MainActivity extends Activity {
     boolean quizInProgress() {
         return rec != null && rec.answeredCount() > 0 && !rec.isComplete();
     }
-    /** A fresh non-zero seed: every new quiz gets its own random (but replayable) question order. */
+    /** A versioned non-zero seed keeps older saved quizzes on their original question bank. */
     private static long newSeed() {
-        long s = new java.util.Random().nextLong() & 0x7FFFFFFFFFFFL;
-        return s == 0L ? 1L : s;
+        long s = new java.util.Random().nextLong()
+                & (MajorRecommender.EXPANDED_QUESTION_BANK_SEED_FLAG - 1L);
+        return MajorRecommender.EXPANDED_QUESTION_BANK_SEED_FLAG | (s == 0L ? 1L : s);
     }
     /** Re-create a finished quiz from a saved history entry. Null if it cannot be replayed. */
     MajorRecommender replay(History.Entry entry) {
         try {
-            MajorRecommender r = new MajorRecommender(entry.answers.length, entry.seed);
+            MajorRecommender r = new MajorRecommender(entry.answers.length, entry.seed, false);
             for (int answer : entry.answers) r.answer(answer);
             if (entry.duel >= 0) r.setDuelWinner(entry.duel);
             return r.isComplete() ? r : null;
@@ -461,5 +463,3 @@ public final class MainActivity extends Activity {
         return new SimpleDateFormat("HH:mm", Locale.US).format(new Date(millis));
     }
 }
-
-

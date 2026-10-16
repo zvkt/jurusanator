@@ -113,12 +113,12 @@ final class ProgressTab extends CoachScreen.Tab {
                     "MODE SINGKAT. Kuis mungkin terasa lambat atau kurang jelas, atau jawaban terburu-buru. Kuis berikutnya: 8 pertanyaan, tanpa \"tidak tahu\", jadi tiap jawaban harus bermakna.");
             break;
             case Profile.STRAT_DEEP:
-            strategy = L.t("DEEP MODE. You look focused, so I am going deeper: 16 questions and a head-to-head duel when two majors are close.",
-                    "MODE MENDALAM. Kamu terlihat fokus, jadi aku masuk lebih dalam: 16 pertanyaan dan duel saat dua jurusan hampir sama.");
+            strategy = L.t("DEEP MODE. You look focused, so I am going deeper: up to 24 questions and a head-to-head duel when two majors are close. The quiz may finish early if one major clearly leads.",
+                    "MODE MENDALAM. Kamu terlihat fokus, jadi aku masuk lebih dalam: maksimal 24 pertanyaan dan duel saat dua jurusan hampir sama. Kuis bisa selesai lebih awal jika satu jurusan unggul jelas.");
             break;
             default:
-            strategy = L.t("STANDARD MODE. 12 questions. I will adjust if I notice something.",
-                    "MODE STANDAR. 12 pertanyaan. Aku akan menyesuaikan jika ada yang kuamati.");
+            strategy = L.t("STANDARD MODE. Up to 24 questions; the quiz may finish early if one major clearly leads.",
+                    "MODE STANDAR. Maksimal 24 pertanyaan; kuis bisa selesai lebih awal jika satu jurusan unggul jelas.");
             break;
         }
         text(box, strategy, 13.5f, 6);
@@ -217,5 +217,4 @@ final class ProgressTab extends CoachScreen.Tab {
         }
     }
 }
-
 

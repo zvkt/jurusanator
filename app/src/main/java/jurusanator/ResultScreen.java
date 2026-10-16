@@ -53,6 +53,11 @@ final class ResultScreen extends Screen {
         col.addView(ui.body(L.t("Based on your answers. Tap PLAN THIS to choose a university and start your plan.",
                 "Berdasarkan jawabanmu. Ketuk RENCANAKAN untuk memilih kampus dan memulai rencanamu."),
                 14f, Pal.bgText()), ui.lp(Ui.MATCH, Ui.WRAP, 0, 8, 0, 16));
+        if (r.stoppedEarly()) {
+            col.addView(ui.body(L.t("The quiz ended early because the same major was the unique #1 for the last 4 answers, after at least 12 answers.",
+                    "Kuis selesai lebih awal karena jurusan yang sama menjadi satu-satunya peringkat #1 selama 4 jawaban terakhir, setelah sedikitnya 12 jawaban."),
+                    12f, Pal.bgText()), ui.lp(Ui.MATCH, Ui.WRAP, 0, 0, 0, 14));
+        }
         List<Recommendation> recs = r.recommendations();
         if (recs.isEmpty()) {
             LinearLayout empty = ui.card(Pal.PAPER, 16f);
@@ -189,8 +194,8 @@ final class ResultScreen extends Screen {
                     ? L.t("Next quiz: SHORT mode, 8 questions without \"don't know\".",
                     "Kuis berikutnya: mode SINGKAT, 8 pertanyaan tanpa \"tidak tahu\".")
                     : p.strategy == Profile.STRAT_DEEP
-                    ? L.t("Next quiz: DEEP mode, 16 questions plus a duel.",
-                    "Kuis berikutnya: mode MENDALAM, 16 pertanyaan plus duel.")
+                    ? L.t("Next quiz: DEEP mode, up to 24 questions plus a duel.",
+                    "Kuis berikutnya: mode MENDALAM, maksimal 24 pertanyaan plus duel.")
                     : L.t("Next quiz: standard mode.", "Kuis berikutnya: mode standar.");
             text = L.t("Focus score of your answers: ", "Skor fokus jawabanmu: ") + p.seriousness + "/100. " + mode;
         }
@@ -246,5 +251,3 @@ final class ResultScreen extends Screen {
         }
     }
 }
-
-

@@ -37,7 +37,7 @@ final class HomeScreen extends Screen {
         col.addView(artCluster());
         col.addView(ui.gap(14));
         LinearLayout chips = ui.hbox();
-        chips.addView(ui.chip(L.t("12 QUESTIONS", "12 PERTANYAAN"), Pal.PAPER), ui.lp(Ui.WRAP, Ui.WRAP, 0, 0, 6, 0));
+        chips.addView(ui.chip(L.t("UP TO 24 QUESTIONS", "MAKS. 24 PERTANYAAN"), Pal.PAPER), ui.lp(Ui.WRAP, Ui.WRAP, 0, 0, 6, 0));
         chips.addView(ui.chip(MajorData.MAJORS.size() + L.t(" MAJORS", " JURUSAN"), Pal.PINK), ui.lp(Ui.WRAP, Ui.WRAP, 0, 0, 6, 0));
         chips.addView(ui.chip(L.t("COACH INCLUDED", "ADA COACH"), Pal.SKY));
         col.addView(chips);
@@ -129,8 +129,8 @@ final class HomeScreen extends Screen {
             mode = L.t("NEXT QUIZ: SHORT MODE (8 questions, no \"don't know\")",
                     "KUIS BERIKUT: MODE SINGKAT (8 pertanyaan, tanpa \"tidak tahu\")");
         } else if (a.profile.strategy == Profile.STRAT_DEEP) {
-            mode = L.t("NEXT QUIZ: DEEP MODE (16 questions + a duel)",
-                    "KUIS BERIKUT: MODE MENDALAM (16 pertanyaan + duel)");
+            mode = L.t("NEXT QUIZ: DEEP MODE (up to 24 questions + a duel)",
+                    "KUIS BERIKUT: MODE MENDALAM (maks. 24 pertanyaan + duel)");
         }
         if (mode != null) {
             TextView tag = ui.tag(mode, Pal.LILAC, -1f);
@@ -248,5 +248,4 @@ final class HomeScreen extends Screen {
         }
     }
 }
-
 
